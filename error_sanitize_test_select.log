@@ -1,0 +1,23 @@
+==================
+WARNING: ThreadSanitizer: unlock of an unlocked mutex (or by a wrong thread) (pid=2491108)
+    #0 pthread_mutex_unlock <null> (libtsan.so.0+0x410dd)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:503 (channel_sanitize+0x402049)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e86)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 160 at 0x7b2800000140 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:8 (channel_sanitize+0x4015fa)
+    #2 test_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:795 (channel_sanitize+0x4068c5)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x40980d)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M8 (0x7b2800000150) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:795 (channel_sanitize+0x4068c5)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x40980d)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: unlock of an unlocked mutex (or by a wrong thread) (/lib64/libtsan.so.0+0x410dd) in __interceptor_pthread_mutex_unlock
+==================

@@ -1,0 +1,3 @@
+Running test case: test_select_response_time : Testing select response time (takes around 30 seconds) ...
+FAILURE: See test.c Line 885: test_select_response_time: Incorrect selected index
+Tests run: 1

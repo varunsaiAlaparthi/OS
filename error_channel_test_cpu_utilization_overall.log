@@ -1,0 +1,3 @@
+Running test case: test_cpu_utilization_overall : Testing overall CPU utilization (takes around 20 seconds) ...
+FAILURE: See test.c Line 1205: test_cpu_utilization_overall: Returned value doesn't match
+Tests run: 1

@@ -1,0 +1,1067 @@
+==================
+WARNING: ThreadSanitizer: unlock of an unlocked mutex (or by a wrong thread) (pid=2380101)
+    #0 pthread_mutex_unlock <null> (libtsan.so.0+0x410dd)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:500 (channel_sanitize+0x402025)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 160 at 0x7b28000000a0 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:8 (channel_sanitize+0x4015fa)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1182 (channel_sanitize+0x4075e8)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M7 (0x7b28000000b0) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1182 (channel_sanitize+0x4075e8)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: unlock of an unlocked mutex (or by a wrong thread) (/lib64/libtsan.so.0+0x410dd) in __interceptor_pthread_mutex_unlock
+==================
+==================
+WARNING: ThreadSanitizer: unlock of an unlocked mutex (or by a wrong thread) (pid=2380101)
+    #0 pthread_mutex_unlock <null> (libtsan.so.0+0x410dd)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:500 (channel_sanitize+0x402025)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 160 at 0x7b2800000000 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:8 (channel_sanitize+0x4015fa)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: unlock of an unlocked mutex (or by a wrong thread) (/lib64/libtsan.so.0+0x410dd) in __interceptor_pthread_mutex_unlock
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800064000 by main thread (mutexes: write M6):
+    #0 list_next /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:47 (channel_sanitize+0x402225)
+    #1 channel_send /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:107 (channel_sanitize+0x40182f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1228 (channel_sanitize+0x4078fa)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Previous write of size 8 at 0x7b0800064000 by thread T99:
+    #0 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:186 (channel_sanitize+0x402724)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 24 at 0x7b0800064000 allocated by thread T100:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 list_insert /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:99 (channel_sanitize+0x402383)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:465 (channel_sanitize+0x401f12)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T99 (tid=2380201, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T100 (tid=2380202, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:47 in list_next
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000050 by thread T3:
+    #0 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:203 (channel_sanitize+0x40274f)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000050 by thread T99:
+    #0 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:203 (channel_sanitize+0x402760)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000040 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 list_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:9 (channel_sanitize+0x4020fc)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:57 (channel_sanitize+0x401668)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T99 (tid=2380201, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:203 in list_remove
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800002008 by thread T2:
+    #0 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:183 (channel_sanitize+0x402713)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800002008 by thread T3:
+    #0 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:193 (channel_sanitize+0x402736)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 24 at 0x7b0800002000 allocated by thread T2:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 list_insert /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:99 (channel_sanitize+0x402383)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:465 (channel_sanitize+0x401f12)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T2 (tid=2380104, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:183 in list_remove
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b080003b000 by thread T59:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b080003b000 by thread T3:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:88 (channel_sanitize+0x402336)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T59 (tid=2380161, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0800031000 by thread T49:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b0800031000 by thread T3:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:88 (channel_sanitize+0x402336)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T49 (tid=2380151, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b080003b010 by thread T59:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b080003b010 by thread T3:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:85 (channel_sanitize+0x402328)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T59 (tid=2380161, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b080003e010 by thread T62:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b080003e010 by thread T3:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:85 (channel_sanitize+0x402328)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T62 (tid=2380164, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b080002d010 by thread T45:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b080002d010 by thread T3:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:85 (channel_sanitize+0x402328)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T45 (tid=2380147, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0800031010 by thread T49:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b0800031010 by thread T3:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:85 (channel_sanitize+0x402328)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T49 (tid=2380151, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b080004c010 by thread T76:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b080004c010 by thread T45:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:85 (channel_sanitize+0x402328)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T76 (tid=2380178, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T45 (tid=2380147, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0800022010 by thread T34:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b0800022010 by thread T3:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:85 (channel_sanitize+0x402328)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T34 (tid=2380136, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T3 (tid=2380105, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000020 by thread T14 (mutexes: write M6):
+    #0 buffer_current_size /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 (channel_sanitize+0x402a15)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:299 (channel_sanitize+0x401ba5)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000020 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:39 (channel_sanitize+0x402952)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T14 (tid=2380116, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 in buffer_current_size
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000020 by thread T21 (mutexes: write M6):
+    #0 buffer_current_size /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 (channel_sanitize+0x402a15)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:299 (channel_sanitize+0x401ba5)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000020 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:39 (channel_sanitize+0x402952)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T21 (tid=2380123, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 in buffer_current_size
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000020 by thread T15 (mutexes: write M6):
+    #0 buffer_current_size /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 (channel_sanitize+0x402a15)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:299 (channel_sanitize+0x401ba5)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000020 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:39 (channel_sanitize+0x402952)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T15 (tid=2380117, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 in buffer_current_size
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000020 by thread T20 (mutexes: write M6):
+    #0 buffer_current_size /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 (channel_sanitize+0x402a15)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:299 (channel_sanitize+0x401ba5)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000020 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:39 (channel_sanitize+0x402952)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T20 (tid=2380122, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 in buffer_current_size
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000020 by thread T97 (mutexes: write M6):
+    #0 buffer_current_size /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 (channel_sanitize+0x402a15)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:299 (channel_sanitize+0x401ba5)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000020 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:39 (channel_sanitize+0x402952)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T97 (tid=2380199, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 in buffer_current_size
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000020 by thread T11 (mutexes: write M6):
+    #0 buffer_current_size /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 (channel_sanitize+0x402a15)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:299 (channel_sanitize+0x401ba5)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000020 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:39 (channel_sanitize+0x402952)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T11 (tid=2380113, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 in buffer_current_size
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000020 by thread T13 (mutexes: write M6):
+    #0 buffer_current_size /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 (channel_sanitize+0x402a15)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:299 (channel_sanitize+0x401ba5)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000020 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:39 (channel_sanitize+0x402952)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T13 (tid=2380115, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 in buffer_current_size
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000020 by thread T8 (mutexes: write M6):
+    #0 buffer_current_size /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 (channel_sanitize+0x402a15)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:299 (channel_sanitize+0x401ba5)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800000020 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:39 (channel_sanitize+0x402952)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T8 (tid=2380110, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:65 in buffer_current_size
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Read of size 8 at 0x7b0800000028 by main thread (mutexes: write M6):
+    #0 buffer_add /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:23 (channel_sanitize+0x402863)
+    #1 channel_send /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:95 (channel_sanitize+0x401786)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1228 (channel_sanitize+0x4078fa)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Previous write of size 8 at 0x7b0800000028 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:40 (channel_sanitize+0x402968)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000020 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:6 (channel_sanitize+0x4027ba)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:23 in buffer_add
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0400000000 by main thread (mutexes: write M6):
+    #0 buffer_add /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:27 (channel_sanitize+0x402894)
+    #1 channel_send /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:95 (channel_sanitize+0x401786)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1228 (channel_sanitize+0x4078fa)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Previous read of size 8 at 0x7b0400000000 by thread T10 (mutexes: write M6):
+    #0 buffer_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:38 (channel_sanitize+0x40293c)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:310 (channel_sanitize+0x401bea)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 8 at 0x7b0400000000 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 buffer_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:7 (channel_sanitize+0x4027ca)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:15 (channel_sanitize+0x40160a)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/buffer.c:27 in buffer_add
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0800000040 by thread T100:
+    #0 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:189 (channel_sanitize+0x40277f)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b0800000040 by thread T10:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:83 (channel_sanitize+0x4022fd)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 32 at 0x7b0800000040 allocated by main thread:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 list_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:9 (channel_sanitize+0x4020fc)
+    #2 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:57 (channel_sanitize+0x401668)
+    #3 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #4 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #5 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T100 (tid=2380202, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T10 (tid=2380112, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:189 in list_remove
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0800062008 by thread T100:
+    #0 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:193 (channel_sanitize+0x402736)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous write of size 8 at 0x7b0800062008 by thread T99:
+    #0 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:193 (channel_sanitize+0x402736)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Location is heap block of size 24 at 0x7b0800062000 allocated by thread T98:
+    #0 malloc <null> (libtsan.so.0+0x2be23)
+    #1 list_insert /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:99 (channel_sanitize+0x402383)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:465 (channel_sanitize+0x401f12)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T100 (tid=2380202, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T99 (tid=2380201, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T98 (tid=2380200, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:193 in list_remove
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0800060010 by thread T96:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b0800060010 by main thread (mutexes: write M6):
+    #0 list_data /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:68 (channel_sanitize+0x402296)
+    #1 channel_send /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:106 (channel_sanitize+0x40181f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1228 (channel_sanitize+0x4078fa)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T96 (tid=2380198, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0800064010 by thread T100:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b0800064010 by thread T76:
+    #0 list_find /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:85 (channel_sanitize+0x40230e)
+    #1 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:489 (channel_sanitize+0x401fe6)
+    #2 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #3 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Thread T100 (tid=2380202, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T76 (tid=2380178, finished) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b080005b000 by thread T91:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b080005b000 by thread T100 (mutexes: write M6):
+    #0 list_next /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:47 (channel_sanitize+0x402225)
+    #1 channel_non_blocking_receive /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:323 (channel_sanitize+0x401c87)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:483 (channel_sanitize+0x401f96)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T91 (tid=2380193, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T100 (tid=2380202, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b0800052000 by thread T82:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b0800052000 by main thread (mutexes: write M6):
+    #0 list_next /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:47 (channel_sanitize+0x402225)
+    #1 channel_send /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:107 (channel_sanitize+0x40182f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1228 (channel_sanitize+0x4078fa)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T82 (tid=2380184, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+==================
+WARNING: ThreadSanitizer: data race (pid=2380101)
+  Write of size 8 at 0x7b080003a000 by thread T58:
+    #0 free <null> (libtsan.so.0+0x2c16a)
+    #1 list_remove /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:202 (channel_sanitize+0x402747)
+    #2 channel_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:490 (channel_sanitize+0x40200a)
+    #3 helper_select /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:103 (channel_sanitize+0x404e46)
+    #4 <null> <null> (libtsan.so.0+0x2a68d)
+
+  Previous read of size 8 at 0x7b080003a000 by main thread (mutexes: write M6):
+    #0 list_next /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/linked_list.c:47 (channel_sanitize+0x402225)
+    #1 channel_send /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:107 (channel_sanitize+0x40182f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1228 (channel_sanitize+0x4078fa)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Mutex M6 (0x7b2800000010) created at:
+    #0 pthread_mutex_init <null> (libtsan.so.0+0x2d621)
+    #1 channel_create /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/channel.c:25 (channel_sanitize+0x40162f)
+    #2 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1176 (channel_sanitize+0x40759e)
+    #3 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #4 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+  Thread T58 (tid=2380160, running) created by main thread at:
+    #0 pthread_create <null> (libtsan.so.0+0x2cd42)
+    #1 test_cpu_utilization_overall /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1190 (channel_sanitize+0x40767d)
+    #2 single_test /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1676 (channel_sanitize+0x4097cd)
+    #3 main /home/grads/vsa5067/Desktop/concurrencylab-kush-varun-main/test.c:1715 (channel_sanitize+0x40141e)
+
+SUMMARY: ThreadSanitizer: data race (/lib64/libtsan.so.0+0x2c16a) in __interceptor_free
+==================
+channel_sanitize: ../nptl/pthread_mutex_lock.c:86: __pthread_mutex_lock: Assertion `mutex->__data.__owner == 0' failed.

@@ -1,0 +1,624 @@
+#include "channel.h"
+#include <stdint.h>
+#include<stdio.h>
+
+// Creates a new channel with the provided size and returns it to the caller
+channel_t* channel_create(size_t size)
+{
+    channel_t* channel = malloc(sizeof(channel_t));
+    
+    // Channel creation failed
+    if (channel == NULL) {
+        return NULL;
+    }
+    
+    buffer_t* new_buffer = buffer_create(size);
+    
+    // Buffer creation failed
+    if(new_buffer == NULL) {
+        // free everything created so far
+        free(channel);
+        return NULL;    
+    }
+
+    channel->buffer = new_buffer;
+    int init_mutex_status = pthread_mutex_init(&channel->mutex, NULL);
+    
+    // initializing mutex failed
+    if (init_mutex_status != 0) {
+        // free everything created so far
+        buffer_free(channel->buffer);
+        free(channel);
+        return NULL;   
+    }
+
+    int init_conditional_status_1 = pthread_cond_init(&channel->channel_no_longer_empty, NULL);
+
+    if(init_conditional_status_1 != 0) {
+        // destroy mutex from previous step and free everything created so far
+        pthread_mutex_destroy(&channel->mutex);
+        buffer_free(channel->buffer);
+        free(channel);
+        return NULL;   
+    }
+
+    int init_conditional_status_2 = pthread_cond_init(&channel->channel_no_longer_full, NULL);
+
+    if(init_conditional_status_2 != 0) {
+        // destroy conditional with mutex from previous step and free everything created so far
+        pthread_cond_destroy(&channel->channel_no_longer_empty);
+        pthread_mutex_destroy(&channel->mutex);
+        buffer_free(channel->buffer);
+        free(channel);
+        return NULL;   
+    }  
+
+    channel->is_closed = false;
+    channel->semaphores = list_create(NULL);
+
+    return channel;
+}
+
+// Writes data to the given channel
+// This is a blocking call i.e., the function only returns on a successful completion of send
+// In case the channel is full, the function waits till the channel has space to write the new data
+// Returns SUCCESS for successfully writing data to the channel,
+// CLOSED_ERROR if the channel is closed, and
+// GENERIC_ERROR on encountering any other generic error of any sort
+enum channel_status channel_send(channel_t *channel, void* data)
+{
+    /* IMPLEMENT THIS */
+    if(channel != NULL) {
+        int lock_mutex = pthread_mutex_lock(&channel->mutex);
+
+        // mutex lock was success
+        if(lock_mutex == 0) {
+            while(buffer_current_size(channel->buffer) >= buffer_capacity(channel->buffer)) {
+                if(channel->is_closed) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CLOSED_ERROR;
+                } 
+
+                // wait till channel no longer full
+                int channel_not_full_status = pthread_cond_wait(&channel->channel_no_longer_full, &channel->mutex);
+                if (channel_not_full_status != 0) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return GENERIC_ERROR;
+                }
+            }
+
+            if (channel->is_closed) {
+                pthread_mutex_unlock(&channel->mutex);
+                return CLOSED_ERROR;
+            }
+
+            enum buffer_status add_status = buffer_add(channel->buffer, data);
+
+            if(add_status == BUFFER_SUCCESS) {
+                // Buffer add was success. The channel can not be empty. Hence make a signal
+                if (pthread_cond_signal(&channel->channel_no_longer_empty) != 0) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return GENERIC_ERROR;
+                }
+  		// Signal all semaphores in the linked list
+        list_node_t* node = list_head(channel->semaphores);
+        while (node != NULL) {
+            sem_post((sem_t*)list_data(node));
+            node = list_next(node);
+        }
+
+                pthread_mutex_unlock(&channel->mutex);
+                return SUCCESS;
+
+            } else {
+                // it is possible that the channel closes in the mean time...
+                if(channel->is_closed == true) {
+                    // unlock the mutex
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CLOSED_ERROR;
+                } else {
+                    // Adding to buffer failed
+                    pthread_mutex_unlock(&channel->mutex);
+                    return GENERIC_ERROR;
+                }
+            }
+        } else {
+            return GENERIC_ERROR;
+        }
+    } else {
+        // channel is NULL
+        return GENERIC_ERROR;
+    }
+}
+
+// Reads data from the given channel and stores it in the function's input parameter, data (Note that it is a double pointer)
+// This is a blocking call i.e., the function only returns on a successful completion of receive
+// In case the channel is empty, the function waits till the channel has some data to read
+// Returns SUCCESS for successful retrieval of data,
+// CLOSED_ERROR if the channel is closed, and
+// GENERIC_ERROR on encountering any other generic error of any sort
+enum channel_status channel_receive(channel_t* channel, void** data)
+{
+    /* IMPLEMENT THIS */
+    if(channel != NULL && data != NULL) {
+        int lock_mutex = pthread_mutex_lock(&channel->mutex);
+        // mutex lock is success
+        if(lock_mutex == 0) {
+            while(buffer_current_size(channel->buffer) == 0) {
+                if(channel->is_closed) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CLOSED_ERROR;
+                } 
+
+                // wait till channel no longer empty
+                int channel_not_empty_status = pthread_cond_wait(&channel->channel_no_longer_empty, &channel->mutex);
+                if (channel_not_empty_status != 0) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return GENERIC_ERROR;
+                }
+            }
+
+            enum buffer_status remove_status = buffer_remove(channel->buffer, data);
+
+            if(remove_status == BUFFER_SUCCESS) {
+                // removal was success..buffer can no longer be full
+                if (pthread_cond_signal(&channel->channel_no_longer_full) != 0) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return GENERIC_ERROR;
+                } else {
+                    
+// Signal all semaphores in the linked list
+        list_node_t* node = list_head(channel->semaphores);
+        while (node != NULL) {
+            sem_post((sem_t*)list_data(node));
+            node = list_next(node);
+        }
+	      pthread_mutex_unlock(&channel->mutex);
+                    return SUCCESS;
+                }
+            } else {
+                // channel can close in the mean time
+                if(channel->is_closed == true) {
+                    // unlock the mutex
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CLOSED_ERROR;
+                }
+                pthread_mutex_unlock(&channel->mutex);
+                return GENERIC_ERROR;
+            }
+        } else {
+            // failed mutex lock
+            return GENERIC_ERROR;
+        }
+
+    } else {
+        // channel or data is NULL
+        return GENERIC_ERROR;
+    }
+}
+
+// Writes data to the given channel
+// This is a non-blocking call i.e., the function simply returns if the channel is full
+// Returns SUCCESS for successfully writing data to the channel,
+// CHANNEL_FULL if the channel is full and the data was not added to the buffer,
+// CLOSED_ERROR if the channel is closed, and
+// GENERIC_ERROR on encountering any other generic error of any sort
+enum channel_status channel_non_blocking_send(channel_t* channel, void* data)
+{
+    /* IMPLEMENT THIS */
+    if(channel != NULL) {
+        // try to lock the mutex
+        int lock_mutex = pthread_mutex_lock(&channel->mutex);
+
+        // mutex lock success
+        if(lock_mutex == 0) {
+            // check 1: if the channel is closed
+            if(channel->is_closed == true) {
+                // unlock the mutex
+                pthread_mutex_unlock(&channel->mutex);
+                return CLOSED_ERROR;
+            }
+
+            // check 2: buffer is full
+            if (buffer_current_size(channel->buffer) >= buffer_capacity(channel->buffer)) {
+                // it is possible that the channel closes in the mean time...
+                if(channel->is_closed == true) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CLOSED_ERROR;
+                } else {
+                    // unlock the mutex
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CHANNEL_FULL;
+                }
+            }
+
+            enum buffer_status add_status = buffer_add(channel->buffer, data);
+
+            if(add_status == BUFFER_SUCCESS) {
+                // Buffer add was success. The channel can not be empty. Hence make a signal
+                if (pthread_cond_signal(&channel->channel_no_longer_empty) != 0) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return GENERIC_ERROR;
+                }
+
+                
+// Signal all semaphores in the linked list
+        list_node_t* node = list_head(channel->semaphores);
+        while (node != NULL) {
+            sem_post((sem_t*)list_data(node));
+            node = list_next(node);
+        }
+	pthread_mutex_unlock(&channel->mutex);
+                return SUCCESS;
+
+            } else {
+                // it is possible that the channel closes in the mean time...
+                if(channel->is_closed == true) {
+                    // unlock the mutex
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CLOSED_ERROR;
+                } else {
+                    // Adding to buffer failed
+                    pthread_mutex_unlock(&channel->mutex);
+                    return GENERIC_ERROR;
+                }
+            }
+        } else {
+            // failed to lock mutex
+            return GENERIC_ERROR;
+        }
+    } else {
+        // channel is null
+        return GENERIC_ERROR;
+    }
+}
+
+// Reads data from the given channel and stores it in the function's input parameter data (Note that it is a double pointer)
+// This is a non-blocking call i.e., the function simply returns if the channel is empty
+// Returns SUCCESS for successful retrieval of data,
+// CHANNEL_EMPTY if the channel is empty and nothing was stored in data,
+// CLOSED_ERROR if the channel is closed, and
+// GENERIC_ERROR on encountering any other generic error of any sort
+enum channel_status channel_non_blocking_receive(channel_t* channel, void** data)
+{
+    // only proceed if channel and data are valid
+    if(channel != NULL && data != NULL) {
+        // try to lock mutex
+        int lock_mutex = pthread_mutex_lock(&channel->mutex);
+        
+        // mutex lock was success
+        if(lock_mutex == 0) {
+            // check 1: if the channel is closed
+            if(channel->is_closed == true) {
+                // unlock the mutex
+                pthread_mutex_unlock(&channel->mutex);
+                return CLOSED_ERROR;
+            }
+
+            // check 2: buffer is empty
+            if (buffer_current_size(channel->buffer) == 0) {
+                if(channel->is_closed == true) {
+                    // unlock the mutex
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CLOSED_ERROR;
+                } else {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CHANNEL_EMPTY;
+                }
+            }
+
+            enum buffer_status remove_status = buffer_remove(channel->buffer, data);
+
+            if(remove_status == BUFFER_SUCCESS) {
+                // removal was success..buffer can no longer be full
+                if (pthread_cond_signal(&channel->channel_no_longer_full) != 0) {
+                    pthread_mutex_unlock(&channel->mutex);
+                    return GENERIC_ERROR;
+                } else {
+                    
+		// Signal all semaphores in the linked list
+			list_node_t* node = list_head(channel->semaphores);
+			while (node != NULL) {
+			    sem_post((sem_t*)list_data(node));
+			    node = list_next(node);
+			}
+		    pthread_mutex_unlock(&channel->mutex);
+                    return SUCCESS;
+                }
+            } else {
+                // channel can close in the mean time
+                if(channel->is_closed == true) {
+                    // unlock the mutex
+                    pthread_mutex_unlock(&channel->mutex);
+                    return CLOSED_ERROR;
+                }
+                pthread_mutex_unlock(&channel->mutex);
+                return GENERIC_ERROR;
+            }
+            
+        } else {
+            // failed to lock mutex
+            return GENERIC_ERROR; 
+        }
+    } else {
+        // channel or data are not valid 
+        return GENERIC_ERROR;
+    }
+}
+
+// Closes the channel and informs all the blocking send/receive/select calls to return with CLOSED_ERROR
+// Once the channel is closed, send/receive/select operations will cease to function and just return CLOSED_ERROR
+// Returns SUCCESS if close is successful,
+// CLOSED_ERROR if the channel is already closed, and
+// GENERIC_ERROR in any other error case
+enum channel_status channel_close(channel_t* channel)
+{
+    /* IMPLEMENT THIS */
+    if(channel != NULL) {
+        int lock_mutex = pthread_mutex_lock(&channel->mutex);
+
+        // mutex was locked successfully
+        if(lock_mutex == 0) {
+            // case 1: channel is aslready closed
+            if (channel->is_closed) {
+                pthread_mutex_unlock(&channel->mutex);
+                return CLOSED_ERROR;
+            }
+
+            channel->is_closed = true;
+            list_node_t* node = list_head(channel->semaphores);
+                    while (node != NULL) {
+                        sem_post((sem_t*)list_data(node));
+                        node = list_next(node);
+                    }
+
+            // channel is closed so broadcast to all blocked threads
+            int broadcast_status_1 = pthread_cond_broadcast(&channel->channel_no_longer_empty);
+            int broadcast_status_2 = pthread_cond_broadcast(&channel->channel_no_longer_full);
+
+            // if either of the broadcast mechanism fails
+            if (broadcast_status_1 == 0 && broadcast_status_2 == 0) {
+              
+                pthread_mutex_unlock(&channel->mutex);
+                return SUCCESS;
+            } else {
+                pthread_mutex_unlock(&channel->mutex);
+                return GENERIC_ERROR;
+            }
+        } else {
+            // failed to lock mutex
+            return GENERIC_ERROR;
+        }
+    } else {
+        // channel was null
+        return GENERIC_ERROR;
+    }
+}
+
+// Frees all the memory allocated to the channel
+// The caller is responsible for calling channel_close and waiting for all threads to finish their tasks before calling channel_destroy
+// Returns SUCCESS if destroy is successful,
+// DESTROY_ERROR if channel_destroy is called on an open channel, and
+// GENERIC_ERROR in any other error case
+enum channel_status channel_destroy(channel_t* channel)
+{
+    /* IMPLEMENT THIS */
+    if(channel != NULL) {
+        int lock_mutex = pthread_mutex_lock(&channel->mutex);
+
+        // mutex lock success
+        if(lock_mutex == 0) {
+            // case 1: check if channel is an open channel
+            if(!channel->is_closed) {
+                pthread_mutex_unlock(&channel->mutex);
+                return DESTROY_ERROR;
+            }
+
+            pthread_mutex_unlock(&channel->mutex);
+
+            // destroy mutex and other conditional variables
+            int destroy_status_1 = pthread_mutex_destroy(&channel->mutex);
+            int destroy_status_2 = pthread_cond_destroy(&channel->channel_no_longer_empty);
+            int destroy_status_3 = pthread_cond_destroy(&channel->channel_no_longer_full);
+
+            if(destroy_status_1 == 0 && destroy_status_2 == 0 && destroy_status_3 == 0) {
+                buffer_free(channel->buffer);
+		list_destroy(channel->semaphores);
+                free(channel);
+                return SUCCESS;
+            } else {
+                return GENERIC_ERROR;
+            }
+        } else {
+            // lock failed
+            return GENERIC_ERROR;
+        }
+
+    } else {
+        // channel was null
+        return GENERIC_ERROR;
+    }
+}
+
+// Takes an array of channels (channel_list) of type select_t and the array length (channel_count) as inputs
+// This API iterates over the provided list and finds the set of possible channels which can be used to invoke the required operation (send or receive) specified in select_t
+// If multiple options are available, it selects the first option and performs its corresponding action
+// If no channel is available, the call is blocked and waits till it finds a channel which supports its required operation
+// Once an operation has been successfully performed, select should set selected_index to the index of the channel that performed the operation and then return SUCCESS
+// In the event that a channel is closed or encounters any error, the error should be propagated and returned through select
+// Additionally, selected_index is set to the index of the channel that generated the error
+enum channel_status channel_select(select_t* channel_list, size_t channel_count, size_t* selected_index) 
+{
+    // Check for invalid input parameters
+    if (channel_list == NULL || selected_index == NULL) {
+        return GENERIC_ERROR;
+    }
+
+     // Create a semaphore for this select operation
+    sem_t select_sem;
+    if (sem_init(&select_sem, 0, 0) != 0) {
+        return GENERIC_ERROR;
+    }
+
+    for (size_t i = 0; i < channel_count; i++) {
+        channel_t* channel = channel_list[i].channel;
+
+        pthread_mutex_lock(&channel->mutex);
+        list_insert(channel->semaphores, &select_sem);
+        pthread_mutex_unlock(&channel->mutex);
+    }
+
+    // Loop to keep checking channels until one operation succeeds
+    while (1) {
+
+        // Iterate through each select_t structure and try the operation (send/receive)
+        for (size_t i = 0; i < channel_count; i++) {
+            select_t* select_item = &channel_list[i];
+            channel_t* channel = select_item->channel;
+
+            // Lock the channel mutex to safely check and modify its state
+            if (pthread_mutex_lock(&channel->mutex) != 0) {
+		for (size_t i = 0; i < channel_count; i++) {
+        			channel_t* channel = channel_list[i].channel;
+				//pthread_mutex_lock(&channel->mutex);
+				list_node_t* noder = list_find(channel->semaphores, &select_sem);
+				list_remove(channel->semaphores, noder);
+				//pthread_mutex_unlock(&channel->mutex);
+
+       
+   			 }
+			sem_destroy(&select_sem);
+                return GENERIC_ERROR;
+            }
+
+            // If the channel is closed, continue to the next channel
+            if (channel->is_closed) {
+		for (size_t i = 0; i < channel_count; i++) {
+        			channel_t* channel = channel_list[i].channel;
+				//pthread_mutex_lock(&channel->mutex);
+				list_node_t* noder = list_find(channel->semaphores, &select_sem);
+				list_remove(channel->semaphores, noder);
+				//pthread_mutex_unlock(&channel->mutex);
+
+       
+   			 }
+			sem_destroy(&select_sem);
+                pthread_mutex_unlock(&channel->mutex);
+                *selected_index = i;
+                return CLOSED_ERROR; // Propagate the closed channel error
+            }
+
+            // Try to perform the requested operation (send or receive)
+            if (select_item->dir == RECV) {
+                // Try to perform receive operation
+                if (buffer_current_size(channel->buffer) > 0) {
+                    // Successfully receive data (non-blocking)
+                    if (buffer_remove(channel->buffer, &select_item->data) == BUFFER_SUCCESS) {
+                        *selected_index = i;
+
+                        // Signal the senders that space is available
+                        if (pthread_cond_signal(&channel->channel_no_longer_full) != 0) {
+
+			    for (size_t i = 0; i < channel_count; i++) {
+        			channel_t* channel = channel_list[i].channel;
+				//pthread_mutex_lock(&channel->mutex);
+				list_node_t* noder = list_find(channel->semaphores, &select_sem);
+				list_remove(channel->semaphores, noder);
+				//pthread_mutex_unlock(&channel->mutex);
+
+       
+   			 }
+
+                            pthread_mutex_unlock(&channel->mutex);
+                            return GENERIC_ERROR;
+                        }
+                        
+			for (size_t i = 0; i < channel_count; i++) {
+        			channel_t* channel = channel_list[i].channel;
+				//pthread_mutex_lock(&channel->mutex);
+				list_node_t* noder = list_find(channel->semaphores, &select_sem);
+				list_remove(channel->semaphores, noder);
+				//pthread_mutex_unlock(&channel->mutex);
+
+       
+   			 }
+                        
+			
+			
+			sem_destroy(&select_sem);
+
+
+			list_node_t* node = list_head(channel->semaphores);
+                    while (node != NULL) {
+                        sem_post((sem_t*)list_data(node));
+                        node = list_next(node);
+                    }
+
+			pthread_mutex_unlock(&channel->mutex);
+                        return SUCCESS; // Operation successful
+                    }
+                } else {
+                    // Channel is empty, move to the next channel
+                   // We are now blocked, need to wait for data
+                }
+            } 
+            else if (select_item->dir == SEND) {
+                // Try to perform send operation
+                if (buffer_current_size(channel->buffer) < buffer_capacity(channel->buffer)) {
+                    // Successfully send data (non-blocking)
+                    if (buffer_add(channel->buffer, select_item->data) == BUFFER_SUCCESS) {
+                        *selected_index = i;
+
+                        // Signal the receivers that data is available
+                        if (pthread_cond_signal(&channel->channel_no_longer_empty) != 0) {
+			    for (size_t i = 0; i < channel_count; i++) {
+        			channel_t* channel = channel_list[i].channel;
+				//pthread_mutex_lock(&channel->mutex);
+				list_node_t* noder = list_find(channel->semaphores, &select_sem);
+				list_remove(channel->semaphores, noder);
+				//pthread_mutex_unlock(&channel->mutex);
+
+       
+   			 }
+			sem_destroy(&select_sem);
+                            pthread_mutex_unlock(&channel->mutex);
+                            return GENERIC_ERROR;
+                        }
+			
+                        
+                        
+			for (size_t i = 0; i < channel_count; i++) {
+        			channel_t* channel = channel_list[i].channel;
+				//pthread_mutex_lock(&channel->mutex);
+				list_node_t* noder = list_find(channel->semaphores, &select_sem);
+				list_remove(channel->semaphores, noder);
+				//pthread_mutex_unlock(&channel->mutex);
+
+       
+   			 }
+
+			sem_destroy(&select_sem);
+
+			 // Signal all semaphores in the linked list
+                    list_node_t* node = list_head(channel->semaphores);
+                    while (node != NULL) {
+                        sem_post((sem_t*)list_data(node));
+                        node = list_next(node);
+                    }
+
+			pthread_mutex_unlock(&channel->mutex);
+                        return SUCCESS; // Operation successful
+                    }
+                } else {
+                    // Channel is full, move to the next channel
+                    // We are now blocked, need to wait for space
+                }
+            }
+
+            // After checking the channel, release the mutex to allow other threads
+            pthread_mutex_unlock(&channel->mutex);
+        }
+
+        sem_wait(&select_sem);
+    }
+}

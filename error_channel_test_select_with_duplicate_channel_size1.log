@@ -1,0 +1,3 @@
+Running test case: test_select_with_duplicate_channel_size1 : Testing select with duplicate operations on same channel ...
+FAILURE: See test.c Line 1595: test_select_with_duplicate_channel: Invalid index
+Tests run: 1

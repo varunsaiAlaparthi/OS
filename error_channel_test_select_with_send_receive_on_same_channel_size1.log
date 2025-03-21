@@ -1,0 +1,3 @@
+Running test case: test_select_with_send_receive_on_same_channel_size1 : Testing select with send/recv on same channel ...
+FAILURE: See test.c Line 1557: test_select_with_send_receive_on_same_channel: Invalid index
+Tests run: 1

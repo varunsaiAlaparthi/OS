@@ -1,0 +1,3 @@
+Running test case: test_select : Testing select API ...
+FAILURE: See test.c Line 816: test_select: Returned value doesn't match
+Tests run: 1

@@ -1,0 +1,3 @@
+Running test case: test_select_with_select_size1 : Testing select with select ...
+FAILURE: See test.c Line 1423: test_select_with_select: Received wrong index
+Tests run: 1
